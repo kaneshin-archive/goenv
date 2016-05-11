@@ -43,27 +43,49 @@ if [ "$platform" = "darwin" ]; then
   fi
 fi
 
+if [[ ${version} =~ ^[a-zA-Z]+- ]]; then
+  aeversion=${version/$BASH_REMATCH}
+  download="https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_${platform}_${arch}${extra}-${aeversion}.zip"
+  # Can't get too clever here
+  set +e
 
+  # Download binary tarball and install
+  # Linux downloads are formatted differently from OS X
+  (
+    archive="go_appengine_sdk_${platform}_${arch}${extra}-${aeversion}.zip"
+    curl --progress -L -f "$download" > "/tmp/${archive}" && \
+    unzip "/tmp/${archive}" && \
+    for file in go_appengine/*; do mv $file .; done && \
+    rm -rf go_appengine && \
+    rm "/tmp/${archive}"
+  ) || \
+    {
+      cd $OLDPWD
+      rmdir "$version_dir"
 
+      echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
+      exit 1
+    }
+else
+  download="https://golang.org/dl/go${version}.${platform}-${arch}${extra}.tar.gz"
+  # Can't get too clever here
+  set +e
 
-download="https://golang.org/dl/go${version}.${platform}-${arch}${extra}.tar.gz"
-# Can't get too clever here
-set +e
+  # Download binary tarball and install
+  # Linux downloads are formatted differently from OS X
+  (
+    curl --progress -L -f "$download" > "/tmp/go${version}.${platform}-${arch}.tar.gz" && \
+    tar zxvf "/tmp/go${version}.${platform}-${arch}.tar.gz" --strip-components 1 && \
+    rm "/tmp/go${version}.${platform}-${arch}.tar.gz"
+  ) || \
+    {
+      cd $OLDPWD
+      rmdir "$version_dir"
 
-# Download binary tarball and install
-# Linux downloads are formatted differently from OS X
-(
-  curl --progress -L -f "$download" > "/tmp/go${version}.${platform}-${arch}.tar.gz" && \
-  tar zxvf "/tmp/go${version}.${platform}-${arch}.tar.gz" --strip-components 1 && \
-  rm "/tmp/go${version}.${platform}-${arch}.tar.gz"
-) || \
-  {
-    cd $OLDPWD
-    rmdir "$version_dir"
-
-    echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
-    exit 1
-  }
+      echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
+      exit 1
+    }
+fi
 
 echo "Installed ${version}"
 cd $OLDPWD

@@ -17,6 +17,11 @@ set -e
 # Set the current Go version
 if [ -z "$GOENV_VERSION" ]; then
   GOENV_VERSION="$(goenv version)"
+  case "$GOENV_VERSION" in
+  appengine-* )
+    GOENV_VERSION="$GOENV_VERSION/goroot"
+    ;;
+  esac
 
   # Couldn't infer from a file either
   if [ -z "$GOENV_VERSION" ]; then
