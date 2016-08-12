@@ -34,13 +34,15 @@ fi
 
 if [ "$platform" = "darwin" ]; then
   # Since go version 1.2, osx packages were subdivided into 10.6 and 10.8
-  if [ "$version" = "1.2" -o "$version" \> "1.2" ]; then
+  case "$version" in
+  1.2*|1.3*|1.4|1.4.[12] )
     if [ "$(uname -r)" \> "12" ]; then
       extra="-osx10.8"
     else
       extra="-osx10.6"
     fi
-  fi
+    ;;
+  esac
 fi
 
 if [[ ${version} =~ ^[a-zA-Z]+- ]]; then
