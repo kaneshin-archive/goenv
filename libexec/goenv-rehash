@@ -124,6 +124,9 @@ shopt -s nullglob
 # executables.
 create_prototype_shim
 remove_outdated_shims
+if [[ -n "$GOBIN" ]]; then
+  make_shims $GOBIN/*
+fi
 make_shims ../versions/*/bin/*
 make_shims ../versions/appengine-*/*/bin/*
 
