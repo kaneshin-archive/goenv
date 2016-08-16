@@ -51,7 +51,7 @@ See `goenv help <command>' for information on a specific command.
 
 ```shell
 goenv install 1.7
-goenv install gae1.9.40
+goenv install gae-1.9.40
 ```
 
 ## Credits
