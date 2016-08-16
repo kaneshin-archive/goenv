@@ -12,9 +12,15 @@ set -e
 
 # Figure out what we're gonna print
 print=""
+no_rehash=""
 for args in "$@"; do
   if [ "$args" = "-" ]; then
     print=1
+    shift
+  fi
+
+  if [ "$args" = "--no-rehash" ]; then
+    no_rehash=1
     shift
   fi
 done
@@ -75,8 +81,8 @@ fi
 
 mkdir -p "${GOENV_ROOT}/"{shims,versions}
 
-if [[ ":${PATH}:" != *:"${GOENV_ROOT}/shims":* ]]; then
-  echo 'export PATH="'${GOENV_ROOT}'/shims:${PATH}"'
-fi
+echo 'export PATH="'${GOENV_ROOT}'/shims:${PATH}"'
 
-echo 'goenv rehash 2>/dev/null'
+if [ -z "$no_rehash" ]; then
+  echo 'goenv rehash 2>/dev/null'
+fi
