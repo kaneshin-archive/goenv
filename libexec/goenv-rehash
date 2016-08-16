@@ -83,7 +83,6 @@ make_shims() {
 
   for file in $shims; do
     if [ -f $file ] && [ -x $file ]; then
-      echo $file
       local shim="${file##*/}"
       register_shim "$shim"
     fi
