@@ -1,0 +1,21 @@
+language: go
+go:
+  - tip
+os:
+  - linux
+  - osx
+env:
+  global:
+    - GOENV_ROOT=$HOME/gopath/src/github.com/kaneshin/goenv
+install:
+  - $GOENV_ROOT/bin/goenv install 1.6.3
+  - $GOENV_ROOT/bin/goenv install 1.7
+before_script:
+  - $GOENV_ROOT/bin/goenv global 1.7
+  - $GOENV_ROOT/bin/goenv rehash
+script:
+  - test -d $GOENV_ROOT/versions/1.6.3
+  - test -d $GOENV_ROOT/versions/1.7
+  - test -x $GOENV_ROOT/shims/go
+  - test -x $GOENV_ROOT/shims/godoc
+  - test -x $GOENV_ROOT/shims/gofmt
