@@ -82,8 +82,11 @@ make_shims() {
   local shims="$@"
 
   for file in $shims; do
-    local shim="${file##*/}"
-    register_shim "$shim"
+    if [ -f $file ] && [ -x $file ]; then
+      echo $file
+      local shim="${file##*/}"
+      register_shim "$shim"
+    fi
   done
 }
 
@@ -127,8 +130,8 @@ remove_outdated_shims
 if [[ -n "$GOBIN" ]]; then
   make_shims $GOBIN/*
 fi
+make_shims ../versions/gae-*/*
 make_shims ../versions/*/bin/*
-make_shims ../versions/appengine-*/*/bin/*
 
 # Restore the previous working directory.
 cd "$OLDPWD"

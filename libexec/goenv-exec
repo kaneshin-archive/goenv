@@ -33,7 +33,8 @@ fi
 GOROOT="$GOENV_ROOT/versions/$GOENV_VERSION"
 
 # if the specified Go version lacks this bin, bail
-if [ ! -x "$GOROOT/bin/$1" ] && [ ! -x "$GOBIN/$1" ]; then
+# Regular && for GAE && GOBIN
+if [ ! -x "$GOROOT/bin/$1" ] && [ ! -x "$GOROOT/$1" ] && [ ! -x "$GOBIN/$1" ]; then
   echo "goenv: \`$1' does not exist for $GOENV_VERSION" >&2
 
   for version in "$(goenv versions)"; do
@@ -48,6 +49,6 @@ fi
 export GOENV_VERSION GOROOT
 
 # Put our bindir onto PATH
-export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOROOT/bin:$GOROOT:$PATH"
 
 exec "$@"
