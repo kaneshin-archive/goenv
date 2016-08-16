@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kaneshin/goenv.svg?branch=master)](https://travis-ci.org/kaneshin/goenv)
 
-goenv supplies the management system to switch between multiple golang releases.
+goenv supplies the management system to switch between multiple Go and Google App Engine for Go releases.
 
 ## Installation
 
@@ -45,6 +45,13 @@ Some useful goenv commands are:
    rehash      Rehash goenv shims (run this after installing executables)
 
 See `goenv help <command>' for information on a specific command.
+```
+
+### `goenv install`
+
+```shell
+goenv install 1.7
+goenv install gae1.9.40
 ```
 
 ## Credits

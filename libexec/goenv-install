@@ -15,14 +15,14 @@ set -e
 
 # Pull the desired version out of ARGV
 version="$1"
+if [[ ${version} =~ ^(gae|appengine|goappengine)- ]]; then
+  # Google App Engine
+  version=gae-${version/$BASH_REMATCH}
+fi
 version_dir="$GOENV_ROOT/versions/$version"
 
 # stash the pwd
 OLDPWD=$(pwd)
-
-# Make the version dir and get in there
-mkdir -p "$version_dir"
-cd "$version_dir"
 
 platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
@@ -45,51 +45,54 @@ if [ "$platform" = "darwin" ]; then
   esac
 fi
 
-if [[ ${version} =~ ^[a-zA-Z]+- ]]; then
+download=""
+if [[ ${version} =~ ^gae- ]]; then
   aeversion=${version/$BASH_REMATCH}
   download="https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_${platform}_${arch}${extra}-${aeversion}.zip"
-  # Can't get too clever here
-  set +e
 
-  # Download binary tarball and install
-  # Linux downloads are formatted differently from OS X
-  (
-    archive="go_appengine_sdk_${platform}_${arch}${extra}-${aeversion}.zip"
-    curl --progress -L -f "$download" > "/tmp/${archive}" && \
-    unzip "/tmp/${archive}" && \
-    for file in go_appengine/*; do mv $file .; done && \
-    rm -rf go_appengine && \
-    rm "/tmp/${archive}"
-  ) || \
-    {
-      cd $OLDPWD
-      rmdir "$version_dir"
-
-      echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
-      exit 1
-    }
 else
   download="https://storage.googleapis.com/golang/go${version}.${platform}-${arch}${extra}.tar.gz"
-  # Can't get too clever here
-  set +e
-
-  # Download binary tarball and install
-  # Linux downloads are formatted differently from OS X
-  (
-    curl --progress -L -f "$download" > "/tmp/go${version}.${platform}-${arch}.tar.gz" && \
-    tar zxvf "/tmp/go${version}.${platform}-${arch}.tar.gz" --strip-components 1 && \
-    rm "/tmp/go${version}.${platform}-${arch}.tar.gz"
-  ) || \
-    {
-      cd $OLDPWD
-      rmdir "$version_dir"
-
-      echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
-      exit 1
-    }
 fi
 
-echo "Installed ${version}"
-cd $OLDPWD
+# Can't get too clever here
+set +e
 
-exec "${GOENV_ROOT}/bin/goenv" rehash
+code="$(curl --silent -LI -w '%{http_code}' -o /dev/null ${download})"
+if [ "404" = ${code} ]; then
+  echo "Not found: ${version}"
+  exit 1
+fi
+
+# Make the version dir and get in there
+mkdir -p "$version_dir"
+cd "$version_dir"
+
+archive="$(basename $download)"
+echo "Downloading ${archive}..."
+echo "-> ${download}"
+
+# Download binary tarball and install
+# Linux downloads are formatted differently from OS X
+ext="${archive##*.}"
+(
+  curl --silent -L -f "$download" > "/tmp/$archive"
+  if [ "zip" = $ext ]; then
+    unzip "/tmp/$archive" > /dev/null
+    for file in go_appengine/*; do
+      rm -fr "$(basename $file)" && mv $file .
+    done
+    rm -rf go_appengine
+  else
+    tar zxf "/tmp/$archive" --strip-components 1
+  fi
+  rm "/tmp/$archive"
+) || {
+  cd $OLDPWD
+  rmdir "$version_dir"
+
+  echo "goenv: unable to install Go \`${version}' from binary, download not available at ${download}"
+  exit 1
+}
+
+echo "Installed ${version} to ${version_dir}"
+cd $OLDPWD
