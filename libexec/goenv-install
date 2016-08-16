@@ -69,7 +69,7 @@ if [[ ${version} =~ ^[a-zA-Z]+- ]]; then
       exit 1
     }
 else
-  download="https://golang.org/dl/go${version}.${platform}-${arch}${extra}.tar.gz"
+  download="https://storage.googleapis.com/golang/go${version}.${platform}-${arch}${extra}.tar.gz"
   # Can't get too clever here
   set +e
 
