@@ -1,5 +1,7 @@
 # goenv
 
+[![Build Status](https://travis-ci.org/kaneshin/goenv.svg?branch=master)](https://travis-ci.org/kaneshin/goenv)
+
 rbenv, but for Go.
 
 ## Installation
