@@ -83,6 +83,11 @@ mkdir -p "${GOENV_ROOT}/"{shims,versions}
 
 echo 'export PATH="'${GOENV_ROOT}'/shims:${PATH}"'
 
+completion="${root}/completions/goenv.${shell}"
+if [ -r "$completion" ]; then
+  echo "source '$completion'"
+fi
+
 if [ -z "$no_rehash" ]; then
   echo 'goenv rehash 2>/dev/null'
 fi
