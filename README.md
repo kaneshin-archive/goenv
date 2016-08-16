@@ -1,28 +1,36 @@
-# goenv
+# Golang Version Management with goenv
 
 [![Build Status](https://travis-ci.org/kaneshin/goenv.svg?branch=master)](https://travis-ci.org/kaneshin/goenv)
 
-rbenv, but for Go.
+goenv supplies the management system to switch between multiple golang releases.
 
 ## Installation
 
-To install the latest stable release:
+### Checkout
 
-```
-git clone -b v0.2.0 https://github.com/kaneshin/goenv.git ~/.goenv
+Clone the repository to install the latest version of goenv.
+
+```shell
+git clone https://github.com/kaneshin/goenv.git ~/.goenv
 ```
 
-Then add the following to your shell config at the end:
+Define the cloned repository path as `$GOENV_ROOT` and then add `$GOENV_ROOT/bin` to your `$PATH` for access to the goenv command-line utility.
 
+```shell
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
 ```
-export PATH="$HOME/.goenv/bin:$PATH"
+
+Add `goenv init` to your shell to enable shims.
+
+```shell
 eval "$(goenv init -)"
 ```
 
 ## Usage
 
 ```
-» goenv help
+$ goenv help
 Usage: goenv <command> [<args>]
 
 Some useful goenv commands are:
