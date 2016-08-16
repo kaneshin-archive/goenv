@@ -148,7 +148,7 @@ if [ -z "$1" ] || [ "$1" == "goenv" ]; then
   [ -z "$usage" ] || exit
   echo
   echo "Some useful goenv commands are:"
-  print_summaries exec shell local global install uninstall version versions rehash
+  print_summaries exec shell local global install uninstall version versions rehash commands
   echo
   echo "See \`goenv help <command>' for information on a specific command."
 else
