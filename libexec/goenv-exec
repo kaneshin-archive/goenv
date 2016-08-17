@@ -49,6 +49,6 @@ fi
 export GOENV_VERSION GOROOT
 
 # Put our bindir onto PATH
-export PATH="$GOROOT/bin:$GOROOT:$PATH"
+export PATH="$GOROOT/bin:$GOROOT:$GOBIN:$PATH"
 
 exec "$@"
