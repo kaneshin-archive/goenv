@@ -32,6 +32,10 @@ fi
 
 GOROOT="$GOENV_ROOT/versions/$GOENV_VERSION"
 
+if [ -z "$GOBIN" ]; then
+  GOBIN="$GOPATH/bin"
+fi
+
 # if the specified Go version lacks this bin, bail
 # Regular && for GAE && GOBIN
 if [ ! -x "$GOROOT/bin/$1" ] && [ ! -x "$GOROOT/$1" ] && [ ! -x "$GOBIN/$1" ]; then
