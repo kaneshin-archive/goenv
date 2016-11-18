@@ -9,9 +9,23 @@ set -e
   set -x
 }
 
+hit_prefix="* "
+miss_prefix="  "
+current_version="$(goenv-version-name || true)"
+num_versions=0
+
+print_version() {
+  if [ "$1" == "$current_version" ]; then
+    echo "${hit_prefix}$(goenv-version 2>/dev/null)"
+  else
+    echo "${miss_prefix}$1"
+  fi
+  num_versions=$((num_versions + 1))
+}
+
 # Iterate over installed versions and write to output
 for path in "${GOENV_ROOT}/versions/"*; do
   if [ -d "$path" ]; then
-    echo "${path##*/}"
+    print_version "${path##*/}"
   fi
 done

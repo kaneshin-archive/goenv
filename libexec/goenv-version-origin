@@ -9,4 +9,11 @@ set -e
   set -x
 }
 
-echo "$(goenv-version-name) (set by $(goenv-version-origin))"
+
+if [ -n "$GOENV_VERSION_ORIGIN" ]; then
+  echo "$GOENV_VERSION_ORIGIN"
+elif [ -n "$GOENV_VERSION" ]; then
+  echo "GOENV_VERSION environment variable"
+else
+  goenv-version-file
+fi
