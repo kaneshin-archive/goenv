@@ -16,7 +16,7 @@ set -e
 
 # Set the current Go version
 if [ -z "$GOENV_VERSION" ]; then
-  GOENV_VERSION="$(goenv version)"
+  GOENV_VERSION="$(goenv version-name)"
   case "$GOENV_VERSION" in
   appengine-* )
     GOENV_VERSION="$GOENV_VERSION/goroot"
@@ -41,7 +41,7 @@ fi
 if [ ! -x "$GOROOT/bin/$1" ] && [ ! -x "$GOROOT/$1" ] && [ ! -x "$GOBIN/$1" ]; then
   echo "goenv: \`$1' does not exist for $GOENV_VERSION" >&2
 
-  for version in "$(goenv versions)"; do
+  for version in "$(goenv version-names)"; do
     if [ -x "$GOENV_ROOT/versions/$version/bin/$1" ]; then
       echo "  $version" >&2
     fi

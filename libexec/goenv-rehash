@@ -129,7 +129,7 @@ remove_outdated_shims
 if [[ -n "$GOBIN" ]]; then
   make_shims $GOBIN/*
 fi
-make_shims ../versions/$(goenv version)/bin/*
+make_shims ../versions/$(goenv version-name)/bin/*
 
 # Restore the previous working directory.
 cd "$OLDPWD"
