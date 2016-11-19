@@ -18,6 +18,10 @@ script:
   - test -d $GOENV_ROOT/versions/1.6.3
   - test -d $GOENV_ROOT/versions/1.7
   - test -d $GOENV_ROOT/versions/gae-1.9.40
+  - |
+    ls -al $GOENV_ROOT/
+    ls -al $GOENV_ROOT/shims
+    $GOENV_ROOT/bin/goenv versions
   - test -x $GOENV_ROOT/shims/go
   - test -x $GOENV_ROOT/shims/godoc
   - test -x $GOENV_ROOT/shims/gofmt
