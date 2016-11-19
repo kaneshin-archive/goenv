@@ -54,6 +54,18 @@ goenv install 1.7
 goenv install gae-1.9.40
 ```
 
+## Completions
+
+```shell
+shellname=$(basename $SHELL)
+
+if [ -n "$GOENV_ROOT" ]; then
+  if [ -f "$GOENV_ROOT/completions/goenv.$shellname" ]; then
+    source "$GOENV_ROOT/completions/goenv.$shellname"
+  fi
+fi
+```
+
 ## Credits
 
 This library was heavily, heavily, heavily inspired by
