@@ -6,18 +6,18 @@ os:
   - osx
 env:
   global:
-    - GOENV_ROOT=$HOME/gopath/src/github.com/kaneshin/goenv
+    GOENV_ROOT: $HOME/gopath/src/github.com/kaneshin/goenv
+    GO_VERSION: 1.7
+    GAE_VERSION: gae-1.9.46
 install:
-  - $GOENV_ROOT/bin/goenv install 1.6.3
-  - $GOENV_ROOT/bin/goenv install 1.7
-  - $GOENV_ROOT/bin/goenv install gae-1.9.40
-before_script:
-  - $GOENV_ROOT/bin/goenv global 1.7
-  - $GOENV_ROOT/bin/goenv rehash
+  - $GOENV_ROOT/bin/goenv install $GO_VERSION
+  - $GOENV_ROOT/bin/goenv install $GAE_VERSION
 script:
-  - test -d $GOENV_ROOT/versions/1.6.3
-  - test -d $GOENV_ROOT/versions/1.7
-  - test -d $GOENV_ROOT/versions/gae-1.9.40
-  - test -x $GOENV_ROOT/shims/go
-  - test -x $GOENV_ROOT/shims/godoc
-  - test -x $GOENV_ROOT/shims/gofmt
+  - test -d $GOENV_ROOT/versions/$GO_VERSION
+  - test -d $GOENV_ROOT/versions/$GAE_VERSION
+  - |
+    $GOENV_ROOT/bin/goenv global $GO_VERSION && $GOENV_ROOT/bin/goenv rehash && \
+    test -x $GOENV_ROOT/shims/go && test -x $GOENV_ROOT/shims/godoc && test -x $GOENV_ROOT/shims/gofmt
+  - |
+    $GOENV_ROOT/bin/goenv global $GAE_VERSION && $GOENV_ROOT/bin/goenv rehash && \
+    test -x $GOENV_ROOT/shims/goapp && test -x $GOENV_ROOT/shims/godoc && test -x $GOENV_ROOT/shims/gofmt
