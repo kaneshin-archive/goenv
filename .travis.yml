@@ -13,7 +13,6 @@ install:
   - $GOENV_ROOT/bin/goenv install $GO_VERSION
   - $GOENV_ROOT/bin/goenv install $GAE_VERSION
 script:
-  - which go goapp gofmt godoc
   - test -d $GOENV_ROOT/versions/$GO_VERSION
   - test -d $GOENV_ROOT/versions/$GAE_VERSION
   - |
