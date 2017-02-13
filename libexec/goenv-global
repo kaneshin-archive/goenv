@@ -32,9 +32,17 @@ case "$version" in
       exit 1
     fi
     ;;
+esac
 
-  *)
+# Iterate over installed versions and write to output
+for path in "${GOENV_ROOT}/versions/"*; do
+  if [ "$version" == "${path##*/}" ]; then
     echo "$version" > "$version_file"
     echo "Set $version_file to use $version"
-    ;;
-esac
+    goenv-rehash 2> /dev/null
+    exit 0
+  fi
+done
+
+echo "goenv: $version doesn't exist" >&2
+exit 1
