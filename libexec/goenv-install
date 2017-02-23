@@ -15,7 +15,12 @@ set -e
 
 # Pull the desired version out of ARGV
 version="$1"
-if [[ ${version} =~ ^(gae|appengine|goappengine)- ]]; then
+if [ ${version} = '--list' ]; then
+    echo 'Available versions:'
+    curl --silent  https://raw.githubusercontent.com/GoogleCloudPlatform/gradle-appengine-plugin/master/RELEASE_NOTES.md | perl -n -e '/^### Versions? ([0-9\.]+) / && print "gae-", $1, "\n"'
+    curl --silent https://golang.org/doc/devel/release.html | perl -n -e '/^(go|Go )([0-9\.]+) / && print $2, "\n"' | sort -nr | uniq
+    exit 0
+elif [[ ${version} =~ ^(gae|appengine|goappengine)- ]]; then
   # Google App Engine
   version=gae-${version/$BASH_REMATCH}
 fi
