@@ -1,6 +1,6 @@
 # Golang Version Management with goenv
 
-[![Build Status](https://travis-ci.org/kaneshin/goenv.svg?branch=master)](https://travis-ci.org/kaneshin/goenv)
+> Note: This project is no longer being maintained since `goapp` command has already immigrated to the official go one.
 
 goenv supplies the management system to switch between multiple Go and Google App Engine for Go releases.
 
